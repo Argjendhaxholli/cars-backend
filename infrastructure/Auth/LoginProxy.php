@@ -43,9 +43,11 @@ class LoginProxy
         $user = $this->userRepository->getWhere('email', $email)->first();
 
         if (!is_null($user)) {
+
             return $this->proxy('password', [
                 'username' => $email,
-                'password' => $password
+                'password' => $password,
+                'user'  => $user
             ]);
         }
 
@@ -73,6 +75,7 @@ class LoginProxy
      */
     public function proxy($grantType, array $data = [])
     {
+        $user = isset($data['user']) ? $data['user'] : null;
         $data = array_merge($data, [
             'client_id'     => env('PASSWORD_CLIENT_ID'),
             'client_secret' => env('PASSWORD_CLIENT_SECRET'),
@@ -100,7 +103,8 @@ class LoginProxy
 
         return [
             'access_token' => $data->access_token,
-            'expires_in' => $data->expires_in
+            'expires_in' => $data->expires_in,
+            'user' => $user
         ];
     }
 

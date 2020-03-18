@@ -1,9 +1,7 @@
 <?php
 
-namespace Api\Users\Services;
+namespace Api\Examples\Services;
 
-use Exception;
-use Illuminate\Auth\AuthManager;
 use Illuminate\Database\DatabaseManager;
 use Illuminate\Events\Dispatcher;
 use Api\Users\Exceptions\UserNotFoundException;
@@ -11,6 +9,7 @@ use Api\Users\Events\UserWasCreated;
 use Api\Users\Events\UserWasDeleted;
 use Api\Users\Events\UserWasUpdated;
 use Api\Users\Repositories\UserRepository;
+use Illuminate\Support\Facades\Auth;
 
 class UserService
 {
@@ -23,7 +22,7 @@ class UserService
     private $userRepository;
 
     public function __construct(
-        AuthManager $auth,
+        Auth $auth,
         DatabaseManager $database,
         Dispatcher $dispatcher,
         UserRepository $userRepository
@@ -61,7 +60,7 @@ class UserService
 
         $this->userRepository->update($user, $data);
 
-        $this->dispatcher->fire(new UserWasUpdated($user));
+        $this->dispatcher->dispatch(new UserWasUpdated($user));
 
         return $user;
     }
@@ -72,7 +71,7 @@ class UserService
 
         $this->userRepository->delete($userId);
 
-        $this->dispatcher->fire(new UserWasDeleted($user));
+        $this->dispatcher->dispatch(new UserWasDeleted($user));
     }
 
     private function getRequestedUser($userId)

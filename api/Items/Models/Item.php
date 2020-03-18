@@ -1,12 +1,12 @@
 <?php
 
-namespace Api\Users\Models;
+namespace Api\Items\Models;
 
+use Infrastructure\Database\Eloquent\Model;
 use Laravel\Passport\HasApiTokens;
 use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends Authenticatable
+class Item extends Model
 {
     use HasApiTokens, Notifiable;
     
@@ -16,7 +16,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name','price','count'
     ];
 
     /**
@@ -25,15 +25,6 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token',
+
     ];
-
-    public function createUser(array $details) : self
-    {
-        $user = new self($details);
-
-        $user->save();
-
-        return $user;
-    }
 }
