@@ -18,9 +18,10 @@ class LoginController extends Controller
 
     public function login(LoginRequest $request)
     {
+
         $email = $request->get('email');
         $password = $request->get('password');
-
+    
         return $this->response($this->loginProxy->attemptLogin($email, $password));
     }
 

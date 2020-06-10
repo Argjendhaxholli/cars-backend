@@ -18,6 +18,7 @@ class ItemController extends Controller
 
     public function getAll()
     {
+
         $resourceOptions = $this->parseResourceOptions();
 
         $data = $this->itemService->getAll($resourceOptions);

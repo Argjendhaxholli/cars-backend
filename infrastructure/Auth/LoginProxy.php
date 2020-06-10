@@ -40,6 +40,7 @@ class LoginProxy
      */
     public function attemptLogin($email, $password)
     {
+        
         $user = $this->userRepository->getWhere('email', $email)->first();
 
         if (!is_null($user)) {
@@ -76,18 +77,19 @@ class LoginProxy
     public function proxy($grantType, array $data = [])
     {
         $user = isset($data['user']) ? $data['user'] : null;
+        
         $data = array_merge($data, [
             'client_id'     => env('PASSWORD_CLIENT_ID'),
             'client_secret' => env('PASSWORD_CLIENT_SECRET'),
             'grant_type'    => $grantType
         ]);
-
+        
         $response = $this->apiConsumer->post('/oauth/token', $data);
-
+      
         if (!$response->isSuccessful()) {
             throw new InvalidCredentialsException();
         }
-
+        
         $data = json_decode($response->getContent());
 
         // Create a refresh token cookie

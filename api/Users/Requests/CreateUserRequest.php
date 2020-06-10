@@ -24,7 +24,9 @@ class CreateUserRequest extends ApiRequest
     public function attributes()
     {
         return [
-            'user.email' => 'the user\'s email'
+            'user.email' => 'user\'s email',
+            'user.name' => 'user\'s name',
+            'user.password' => 'user\'s password'
         ];
     }
 }
